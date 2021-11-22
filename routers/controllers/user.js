@@ -1,5 +1,18 @@
 const userModel = require("../../db/models/userSchema");
 
+//register controller
+const register= async (req, res) => {
+  try {
+     const publisher = new userModel(req.body);
+     await publisher.save();
+     res.status(201).json({success:true, data: publisher });
+
+  } catch (err) {
+     res.status(400).json({success: false, message:err.message});
+  }
+  
+}
+
 //login cotroller
 const login = (req, res) => {
   const { email, password } = req.body;
@@ -19,7 +32,7 @@ const login = (req, res) => {
 
 
 //signout
-const signout = (req, res) => {
+const signOut = (req, res) => {
   res.clearCookie("t");
   res.json({ msg: "Signout successfully" });
 }
@@ -36,4 +49,4 @@ const getAllUsers = (req, res) => {
       res.send(err);
     });
 };
-module.exports = { login, register , signout , getAllUsers};
+module.exports = { login, register , signOut , getAllUsers};
