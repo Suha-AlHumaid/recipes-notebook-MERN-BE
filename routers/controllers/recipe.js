@@ -11,6 +11,20 @@ const getAllRecipes = (req, res) => {
       res.send(err);
     });
 };
+
+//show all recipes for user
+const getAllUserRecipes = async (req, res) => {
+  const { id } = req.params;
+  const publisher = await userModel.findById({ _id: id });
+  recipeModel
+    .find({publisher})
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      res.send(err);
+    });
+};
 // show recipe by id "/recipe", getRecipe
 const getRecipe = (req, res) => {
   const { id } = req.params;
@@ -107,7 +121,7 @@ const deleteRecipe = (req, res) => {
 };
 
 ////add new recipe "/recipe", addRecipe
-const addRecipe= async (req, res)=>{
+const addRecipe = async (req, res) => {
   try {
     const recipe = new recipeModel(req.body);
     await recipe.save();
@@ -116,17 +130,16 @@ const addRecipe= async (req, res)=>{
     // * 2. Call Push method on publishedrecipe key of Publisher.
     // * 3. Pass newly created book as value.
     // * 4. Call save method.
-    const publisher = await userModel.findById({_id: recipe.publisher})
+    const publisher = await userModel.findById({ _id: recipe.publisher });
     publisher.publishedRecpie.push(recipe);
     await publisher.save();
 
     //return new recipe object, after saving it to Publisher
-    res.status(200).json({success:true, data: recipe })
-
- } catch (err) {
-    res.status(400).json({success: false, message:err.message})
- }
-}
+    res.status(200).json({ success: true, data: recipe });
+  } catch (err) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
 
 module.exports = {
   getAllRecipes,
@@ -134,4 +147,5 @@ module.exports = {
   addRecipe,
   editRecipe,
   deleteRecipe,
+  getAllUserRecipes
 };

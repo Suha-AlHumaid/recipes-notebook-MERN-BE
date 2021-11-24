@@ -21,7 +21,7 @@ app.use("/user", userRouter);
 
 // Recipe
 const recipeRouter = require("./routers/routes/recipe");
-app.use("/recipes", recipeRouter);
+app.use("/", recipeRouter);
 
 //////////////////////////
 
