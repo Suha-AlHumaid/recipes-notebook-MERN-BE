@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const morgan = require("morgan");
 const db = require("./db/db");
+
 dotenv.config();
 
 const PORT = process.env.PORT;
@@ -15,8 +16,12 @@ app.use(morgan("dev"));
 
 ////////////////////////
 
+ 
+
+
 // User 
 const userRouter = require("./routers/routes/user");
+
 app.use("/user", userRouter);
 
 // Recipe
@@ -24,6 +29,8 @@ const recipeRouter = require("./routers/routes/recipe");
 app.use("/", recipeRouter);
 
 //////////////////////////
+
+
 
 app.listen(PORT, () => {
   console.log(`server is running ${PORT}`);

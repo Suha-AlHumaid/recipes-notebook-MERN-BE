@@ -21,8 +21,10 @@
   "homepage": "https://github.com/Suha-AlHumaid/U02P01Backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
+    "cors-prefetch-middleware": "^1.0.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "images-upload-middleware": "^1.1.1",
     "mongoose": "^6.0.13",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.15"
