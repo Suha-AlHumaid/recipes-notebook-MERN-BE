@@ -1,41 +1,42 @@
 const userModel = require("../../db/models/userSchema");
 
 //register controller
-const register= async (req, res) => {
+const register = async (req, res) => {
   try {
-     const publisher = new userModel(req.body);
-     await publisher.save();
-     res.status(201).json({success:true, data: publisher });
-
+    const { userName, email, password } = req.body;
+    const user = new userModel({ userName, email, password });
+    await user.save();
+    userModel.findOne({ email: email }, (err, user) => {
+      if (user) {
+          res.send({ message: "Login Successfuly", user: user });
+        }
+          res.send({ message: "You have an account" }, {hi: err});
+   
+      
+    });
   } catch (err) {
-     res.status(400).json({success: false, message:err.message});
+    // res.send({ message: "faild " }, {err: err});
+    console.log(err)
+    res.status(400).json({ message: err });
   }
-  
-}
+};
 
 //login cotroller
 const login = (req, res) => {
   const { email, password } = req.body;
-  userModel.findOne({ email: email }, (err, user) => {
+  userModel.findOne({ email: email },
+     (err, user) => {
     if (user) {
-      if (password == user.password) {
-        res.send({ message: "login sucess", user: user });
+      if (password === user.password) {
+        res.send({ message: "Login Successfuly", user: user });
       } else {
-        res.send({ message: "wrong credentials" });
+        res.send({ message: "Invalid Password" });
       }
     } else {
-      res.send("not register");
+      res.send({ message:"You Do not have an account"});
     }
   });
 };
-
-
-
-//signout
-const signOut = (req, res) => {
-  res.clearCookie("t");
-  res.json({ msg: "Signout successfully" });
-}
 
 
 //show all users
@@ -49,4 +50,63 @@ const getAllUsers = (req, res) => {
       res.send(err);
     });
 };
-module.exports = { login, register , signOut , getAllUsers};
+
+// get user by id 
+const getUser = (req, res) => {
+  const { id } = req.params;
+  userModel
+  .findById({ _id: id })
+  .then((result) => {
+    res.send(result);
+  })
+  .catch((err) => {
+    res.send(err);
+  });
+};
+
+//Edit user by id "/user/:id", updatUser
+const updatUser = (req, res) => {
+  const { id } = req.params;
+  const { userName, email, password} =
+    req.body;
+
+  if (userName) {
+    userModel
+      .findByIdAndUpdate({ _id: id }, { userName: userName }, { new: true })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  }
+
+  if (email) {
+    userModel
+      .findByIdAndUpdate({ _id: id }, { email: email }, { new: true })
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.send(err);
+      });
+  }
+
+  if (password) {
+    userModel
+      .findByIdAndUpdate(
+        { _id: id },
+        { password: password },
+        { new: true }
+      )
+      .then((result) => {
+        res.json(result);
+      })
+      .catch((err) => {
+        res.send(err ,{message: err.message});
+      });
+  }
+};
+
+
+module.exports = { login, register, getAllUsers, getUser, updatUser };

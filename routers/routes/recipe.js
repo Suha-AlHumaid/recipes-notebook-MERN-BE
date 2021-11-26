@@ -7,8 +7,8 @@ const {
   addRecipe,
   editRecipe,
   deleteRecipe,
+  getAllUserRecipes
 } = require("../controllers/recipe");
-
 
 const recipeRouter = express.Router();
 
@@ -26,5 +26,8 @@ recipeRouter.put("/recipe/:id", editRecipe);
 
 //Soft delete router
 recipeRouter.delete("/recipe/:id", deleteRecipe);
+
+recipeRouter.get("/yourRecipes/:id",getAllUserRecipes)
+
 
 module.exports = recipeRouter;
