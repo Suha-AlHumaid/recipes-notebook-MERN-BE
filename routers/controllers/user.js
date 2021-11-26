@@ -28,7 +28,8 @@ const login = (req, res) => {
      (err, user) => {
     if (user) {
       if (password === user.password) {
-        res.send({ message: "Login Successfuly", user: user });
+        res.status(400).json({ message: "Login Successfuly", user: user });
+        // res.status(200).send({ message: "Login Successfuly", user: user })
       } else {
         res.send({ message: "Invalid Password" });
       }
