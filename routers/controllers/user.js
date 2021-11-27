@@ -80,22 +80,14 @@ const updatUser = (req, res) => {
 
   if (email) {
     
-    userModel.findOne({ email: email }, (err, user) => {
-      if (user) {
-        res.status(203).send({ message: "Email is already taken" });
-        } else {
-    userModel
-      .findByIdAndUpdate({ _id: id }, { email: email }, { new: true })
-      .then((result) => {
-        res.status(200).json(result);
-      })
-      .catch((err) => {
-        res.send(err);
-      });
-    }
-  }).catch((err) => {
-    res.send(err);
-  })
+        userModel
+        .findByIdAndUpdate({ _id: id }, { email: email }, { new: true })
+        .then((result) => {
+          res.json(result);
+        })
+        .catch((err) => {
+          res.send(err ,{message:"email is token"} );
+        });
 }
 
   if (password) {
