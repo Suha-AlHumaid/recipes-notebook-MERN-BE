@@ -2,21 +2,20 @@ const userModel = require("../../db/models/userSchema");
 
 //register controller
 const register = async (req, res) => {
-  try {
+
     const { userName, email, password } = req.body;
-    const user = new userModel({ userName, email, password });
-    await user.save();
     userModel.findOne({ email: email }, (err, user) => {
       if (user) {
-          res.send({ message: "Login Successfuly", user: user });
+        res.send({ message: "You have an account" });
+        } else {
+          const user = new userModel({ userName, email, password });
+          user.save();
+          res.status(200).send({ message: "Login Successfuly", user: user });
         }
-          res.send({ message: "You have an account" });
-   
+         
       
     });
-  } catch (err) {
-    res.send({ message: "faild " ,err: err});
-  }
+
 };
 
 //login cotroller
