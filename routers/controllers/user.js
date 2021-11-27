@@ -71,7 +71,7 @@ const updatUser = (req, res) => {
     userModel
       .findByIdAndUpdate({ _id: id }, { userName: userName }, { new: true })
       .then((result) => {
-        res.json(result);
+        res.status(200).json(result);
       })
       .catch((err) => {
         res.send(err);
@@ -79,15 +79,24 @@ const updatUser = (req, res) => {
   }
 
   if (email) {
+    
+    userModel.findOne({ email: email }, (err, user) => {
+      if (user) {
+        res.status(200).send({ message: "Email is already taken" });
+        } else {
     userModel
       .findByIdAndUpdate({ _id: id }, { email: email }, { new: true })
       .then((result) => {
-        res.json(result);
+        res.status(200).json(result);
       })
       .catch((err) => {
         res.send(err);
       });
-  }
+    }
+  }).catch((err) => {
+    res.send(err);
+  })
+}
 
   if (password) {
     userModel
@@ -97,7 +106,7 @@ const updatUser = (req, res) => {
         { new: true }
       )
       .then((result) => {
-        res.json(result);
+        res.status(200).json(result);
       })
       .catch((err) => {
         res.send(err ,{message: err.message});
