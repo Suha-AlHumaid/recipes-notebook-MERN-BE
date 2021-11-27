@@ -82,7 +82,7 @@ const updatUser = (req, res) => {
     
     userModel.findOne({ email: email }, (err, user) => {
       if (user) {
-        res.status(200).send({ message: "Email is already taken" });
+        res.status(203).send({ message: "Email is already taken" });
         } else {
     userModel
       .findByIdAndUpdate({ _id: id }, { email: email }, { new: true })
