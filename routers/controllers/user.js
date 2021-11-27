@@ -10,14 +10,12 @@ const register = async (req, res) => {
       if (user) {
           res.send({ message: "Login Successfuly", user: user });
         }
-          res.send({ message: "You have an account" }, {hi: err});
+          res.send({ message: "You have an account" });
    
       
     });
   } catch (err) {
-    // res.send({ message: "faild " }, {err: err});
-    console.log(err)
-    res.status(400).json({ message: err });
+    res.send({ message: "faild " ,err: err});
   }
 };
 
@@ -28,8 +26,7 @@ const login = (req, res) => {
      (err, user) => {
     if (user) {
       if (password === user.password) {
-        res.status(400).json({ message: "Login Successfuly", user: user });
-        // res.status(200).send({ message: "Login Successfuly", user: user })
+        res.status(200).send({ message: "Login Successfuly",user: user })
       } else {
         res.send({ message: "Invalid Password" });
       }
